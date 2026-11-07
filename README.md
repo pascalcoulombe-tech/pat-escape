@@ -37,10 +37,14 @@ L’adresse contient `seed`, `difficulty` (`discovery`, `standard` ou `expert`) 
 
 Une version autre que 1 est refusée. Une nouvelle partie choisit une autre graine. Recommencer remet le temps, les énigmes, l’inventaire et les cachettes à zéro.
 
+## Modèles
+
+Chaque partie affiche dix GLB locaux, ceux du thème et du gabarit tirés : `room_shell.glb`, `door.glb`, et un fichier par meuble. L’adresse est préfixée par la base Vite, `/pat-escape/models/…` dans le build. Les collisions, les ancres et le générateur restent ceux des boîtes. Un fichier manquant ne retire que son slot : la boîte de couleur reste, et la partie continue. Aucun service externe. Pas d’animation. Pas de linteau : l’ouverture au-dessus de la porte laisse voir le brouillard de la pièce.
+
 ## Déploiement
 
 Le workflow `.github/workflows/pages.yml` est manuel (`workflow_dispatch`) et ne déploie que `main`. Il installe, teste, typecheck, build, puis publie l’artefact Pages. Cette branche de fonctionnalité n’est pas déployée.
 
 ## Limites V1
 
-Une seule pièce par partie. Pas de sauvegarde, de serveur, de voix, de saut ni d’assets externes. L’objectif de 30 images/s sur un Samsung Galaxy S20 réel n’a pas été mesuré ici : voir `GAME.md`.
+Une seule pièce par partie. Pas de sauvegarde, de serveur, de voix ni de saut. Les GLB sont dans le dépôt, pas chargés ailleurs. L’objectif de 30 images/s sur un Samsung Galaxy S20 réel n’a pas été mesuré ici : voir `GAME.md`.

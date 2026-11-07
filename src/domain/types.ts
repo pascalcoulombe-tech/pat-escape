@@ -186,6 +186,8 @@ export type SceneAdapter = Readonly<{
   render(pose: Pose, game: GameState): void;
   pick(pose: Pose): Id | null;
   setPixelRatio(ratio: number): void;
+  visualCount(): number;
+  doorX(): number;
   dispose(): void;
 }>;
 

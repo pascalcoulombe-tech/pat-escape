@@ -1,7 +1,11 @@
 import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { INTERACT_RANGE } from '../domain/config';
 import type { Id, SceneAdapter, ThemeId, WorldDescription } from '../domain/types';
 import { wallColliders } from '../generation/layouts';
+import { assetsForRun } from './model-url';
+import { raycastProxy } from './proxy-raycast';
+import { createVisualSession, type VisualSlot } from './visuals';
 
 const THEME_COLORS: Record<ThemeId, { wall: number; floor: number; ceiling: number; wood: number; accent: number; fog: number; light: number }> = {
   cabane: { wall: 0x8d5a3b, floor: 0xc4a574, ceiling: 0x6b4226, wood: 0xa56b3c, accent: 0x4e342e, fog: 0xd7c4a3, light: 1.05 },
@@ -10,6 +14,10 @@ const THEME_COLORS: Record<ThemeId, { wall: number; floor: number; ceiling: numb
 };
 
 const PICK_ANGLE = 1.05;
+
+export function doorVisualX(open: boolean, closedX: number): number {
+  return open ? 1.05 : closedX;
+}
 
 export function lookDirection(yaw: number, pitch: number): { x: number; y: number; z: number } {
   return {
@@ -67,20 +75,34 @@ export function createScene(canvas: HTMLCanvasElement, description: WorldDescrip
 
   const geometries: THREE.BufferGeometry[] = [box];
   const occluders: THREE.Object3D[] = [];
+  const wallMeshes: THREE.Mesh[] = [];
   for (const wall of wallColliders(true)) {
-    occluders.push(addBox(scene, box, wallMaterial, wall, { blocks: true }));
+    const mesh = addBox(scene, box, wallMaterial, wall, { blocks: true });
+    wallMeshes.push(mesh);
+    occluders.push(mesh);
   }
-  let door: THREE.Mesh | null = null;
+  const shellPivot = new THREE.Group();
+  scene.add(shellPivot);
+  const pivots = new Map<string, THREE.Object3D>();
   for (const module of description.modules) {
     const material = module.kind === 'tapis' ? rugMaterial : module.kind === 'tableau' || module.kind === 'leviers' ? accentMaterial : woodMaterial;
     const mesh = addBox(scene, box, material, module.collision, { id: module.id, blocks: module.blocksMovement });
     if (!mobile) mesh.castShadow = module.blocksMovement;
     mesh.receiveShadow = !mobile;
+    const pivot = pivotAt(mesh);
+    pivots.set(module.kind, pivot);
+    scene.add(pivot);
     occluders.push(mesh);
   }
-  door = addBox(scene, box, accentMaterial, description.exit.collision, { id: description.exit.id, blocks: true });
+  const door = addBox(scene, box, accentMaterial, description.exit.collision, { id: description.exit.id, blocks: true });
+  const doorPivot = pivotAt(door);
+  const closedDoorX = doorPivot.position.x;
+  scene.add(doorPivot);
   occluders.push(door);
   addLynx(scene, materials, geometries);
+  const loader = new GLTFLoader();
+  const visuals = createVisualSession(async (url) => (await loader.loadAsync(url)).scene);
+  void visuals.load(visualSlots(description, shellPivot, doorPivot, pivots, floor, ceiling, wallMeshes, door));
 
   const targets = [
     ...description.spots.map((spot) => ({ id: spot.id, point: spot.interaction })),
@@ -118,11 +140,8 @@ export function createScene(canvas: HTMLCanvasElement, description: WorldDescrip
       direction.set(facing.x, facing.y, facing.z);
       camera.position.copy(eye);
       camera.lookAt(eye.x + direction.x, eye.y + direction.y, eye.z + direction.z);
-      if (door) {
-        const open = game.exitOpened;
-        door.position.x = open ? 1.05 : (description.exit.collision.min.x + description.exit.collision.max.x) / 2;
-        door.userData.blocks = !open;
-      }
+      doorPivot.position.x = doorVisualX(game.exitOpened, closedDoorX);
+      door.userData.blocks = !game.exitOpened;
       renderer.render(scene, camera);
     },
     pick(pose) {
@@ -154,7 +173,14 @@ export function createScene(canvas: HTMLCanvasElement, description: WorldDescrip
       width = 0;
       applySize();
     },
+    visualCount() {
+      return visuals.count();
+    },
+    doorX() {
+      return doorPivot.position.x;
+    },
     dispose() {
+      visuals.dispose();
       renderer.dispose();
       for (const geometry of geometries) geometry.dispose();
       for (const material of materials) material.dispose();
@@ -183,6 +209,35 @@ function addBox(
   mesh.userData = data;
   scene.add(mesh);
   return mesh;
+}
+
+function pivotAt(mesh: THREE.Mesh): THREE.Group {
+  const pivot = new THREE.Group();
+  pivot.position.copy(mesh.position);
+  mesh.position.set(0, 0, 0);
+  mesh.removeFromParent();
+  pivot.add(mesh);
+  return pivot;
+}
+
+function visualSlots(
+  description: WorldDescription,
+  shellPivot: THREE.Object3D,
+  doorPivot: THREE.Object3D,
+  pivots: ReadonlyMap<string, THREE.Object3D>,
+  floor: THREE.Mesh,
+  ceiling: THREE.Mesh,
+  walls: readonly THREE.Mesh[],
+  door: THREE.Mesh,
+): VisualSlot[] {
+  return assetsForRun(description.theme, description.layoutId, import.meta.env.BASE_URL).map((request) => {
+    if (request.slot === 'room_shell') return { ...request, parent: shellPivot, proxies: [floor, ceiling, ...walls] };
+    if (request.slot === 'sortie') return { ...request, parent: doorPivot, proxies: [door] };
+    const parent = pivots.get(request.slot);
+    const proxy = parent?.children[0];
+    if (!parent || !(proxy instanceof THREE.Mesh)) throw new Error(`Module visuel absent : ${request.slot}`);
+    return { ...request, parent, proxies: [proxy] };
+  });
 }
 
 function addLynx(scene: THREE.Scene, materials: THREE.Material[], geometries: THREE.BufferGeometry[]) {
@@ -220,7 +275,9 @@ function blocked(
   const direction = offset.clone().normalize();
   raycaster.set(origin, direction);
   raycaster.far = distance;
-  const hits = raycaster.intersectObjects(occluders, false);
+  const hits: THREE.Intersection[] = [];
+  for (const occluder of occluders) raycastProxy(occluder, raycaster, hits);
+  hits.sort((left, right) => left.distance - right.distance);
   for (const hit of hits) {
     if (hit.object.userData.ignore) continue;
     if (hit.object.userData.id === targetId) return false;

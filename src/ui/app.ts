@@ -497,6 +497,10 @@ async function startGame(root: HTMLElement, input: SeedInput): Promise<void> {
     root.dataset.journal = game.journalIds.join(',');
     root.dataset.solved = game.solvedIds.join(',');
     root.dataset.pointers = String(pointers.size);
+    root.dataset.visuals = String(scene.visualCount());
+    root.dataset.doorX = scene.doorX().toFixed(3);
+    root.dataset.theme = world.theme;
+    root.dataset.layout = world.layoutId;
     if (mobile) {
       const active = session.phase === 'running' ? deltaMs : 0;
       const fps = deltaMs > 0 ? 1000 / deltaMs : 60;

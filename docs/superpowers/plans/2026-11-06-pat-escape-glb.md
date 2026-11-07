@@ -25,35 +25,35 @@
 
 **Fichiers :** `src/runtime/model-url.ts`, `tests/model-url.test.ts`, `tests/glb-integrity.test.ts`, `public/models/**`, `src/assets/delivery-manifest.json`, `src/assets/glb-checksums.json`.
 
-- [ ] Écrire les tests : 10 URL pour un couple thème/gabarit, `commode`+`couloir` différent de `commode`+`perimetre`, base `/pat-escape/`, 3×3 couvert, somme 2090432, chaque `bytes` et chaque SHA-256.
-- [ ] Les lancer et constater l’échec d’import.
-- [ ] Implémenter `modelUrl` et `assetsForRun`.
-- [ ] Relancer jusqu’au vert.
+- [x] Écrire les tests : 10 URL pour un couple thème/gabarit, `commode`+`couloir` différent de `commode`+`perimetre`, base `/pat-escape/`, 3×3 couvert, somme 2090432, chaque `bytes` et chaque SHA-256.
+- [x] Les lancer et constater l’échec d’import.
+- [x] Implémenter `modelUrl` et `assetsForRun`.
+- [x] Relancer jusqu’au vert.
 
 ### Tâche 2 — Rayon malgré `visible === false`
 
 **Fichiers :** `src/runtime/proxy-raycast.ts`, `tests/proxy-raycast.test.ts`.
 
-- [ ] Test : un maillage `visible = false` est quand même touché par `raycastProxy`.
-- [ ] Constater le rouge, puis implémenter en forçant `visible` le temps de `mesh.raycast`.
-- [ ] Vert.
+- [x] Test : un maillage `visible = false` est quand même touché par `raycastProxy`.
+- [x] Constater le rouge, puis implémenter en forçant `visible` le temps de `mesh.raycast`.
+- [x] Vert.
 
 ### Tâche 3 — Branchement visuel
 
 **Fichiers :** `src/runtime/scene.ts`, `src/runtime/visuals.ts`, `src/ui/app.ts`.
 
-- [ ] Charger les 10 URL, poser coque et meubles, ghost `colorWrite/depthWrite` false sur les proxies sans `visible = false`.
-- [ ] GLB : `raycast` vide. Porte : groupe déplacé en X.
-- [ ] Époque + dispose. `dataset.visuals` et `dataset.doorX`.
-- [ ] Fallback par slot si le chargement rejette.
+- [x] Charger les 10 URL, poser coque et meubles, ghost `colorWrite/depthWrite` false sur les proxies sans `visible = false`.
+- [x] GLB : `raycast` vide. Porte : groupe déplacé en X.
+- [x] Époque + dispose. `dataset.visuals` et `dataset.doorX`.
+- [x] Fallback par slot si le chargement rejette.
 
 ### Tâche 4 — Navigateur et docs
 
 **Fichiers :** `e2e/game.spec.ts`, `README.md`, `GAME.md`.
 
-- [ ] 9 couples thème/gabarit : 10 visuels, pas de 404.
-- [ ] Souris droite/gauche/bas inchangée. Une interaction et la porte après une partie Découverte.
-- [ ] Un GLB en 404 : 9 visuels, la partie continue.
-- [ ] `npm test`, typecheck, build, e2e concernés. Captures. Pas de merge.
+- [x] 9 couples thème/gabarit : 10 visuels, pas de 404.
+- [x] Souris droite/gauche/bas inchangée. Une interaction et la porte après une partie Découverte.
+- [x] Un GLB en 404 : 9 visuels, la partie continue.
+- [x] `npm test`, typecheck, build, e2e concernés. Captures. Pas de merge.
 
 ---
