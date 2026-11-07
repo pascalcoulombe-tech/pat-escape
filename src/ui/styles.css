@@ -1,0 +1,236 @@
+:root {
+  color: #fff8e8;
+  background: #140e0a;
+  font-family: "Segoe UI", "Avenir Next", sans-serif;
+  font-size: 18px;
+}
+
+* { box-sizing: border-box; }
+
+html, body, #app {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: #140e0a;
+}
+
+button, .choice, input[type="range"] {
+  font: inherit;
+  min-width: 48px;
+  min-height: 48px;
+}
+
+button, .choice {
+  border: 2px solid #3a2718;
+  background: #f4e1b5;
+  color: #2a1c12;
+  border-radius: 12px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+button:focus-visible, .choice:focus-visible {
+  outline: 3px solid #ffe082;
+  outline-offset: 2px;
+}
+
+#view {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: none;
+}
+
+#view.concealed { visibility: hidden; }
+
+#hud, #interact, #pat, #status, #offer, #reticle, #move-zone, #look-zone, #panel, #veil {
+  position: fixed;
+  z-index: 12;
+}
+
+#hud {
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  padding: max(8px, env(safe-area-inset-top)) 8px 8px;
+  background: rgb(20 14 10 / 88%);
+  z-index: 16;
+}
+
+#timer, #hint-count { font-variant-numeric: tabular-nums; min-height: 48px; display: grid; place-items: center; }
+
+#reticle {
+  left: 50%;
+  top: 46%;
+  transform: translate(-50%, -50%);
+  z-index: 11;
+  pointer-events: none;
+  text-align: center;
+  text-shadow: 0 1px 2px #000;
+}
+
+#reticle::before {
+  content: "+";
+  display: block;
+  font-size: 28px;
+  line-height: 1;
+}
+
+#target-name {
+  display: inline-block;
+  min-height: 1.2em;
+  background: rgb(20 14 10 / 75%);
+  padding: 2px 8px;
+}
+
+#move-zone, #look-zone {
+  top: 76px;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 9;
+}
+
+#move-zone { left: 0; width: 42%; }
+#look-zone { right: 0; width: 58%; }
+
+html[data-touch="1"] #move-zone,
+html[data-touch="1"] #look-zone { pointer-events: auto; }
+
+#interact {
+  right: max(12px, env(safe-area-inset-right));
+  bottom: max(12px, env(safe-area-inset-bottom));
+  z-index: 17;
+  min-width: 112px;
+  min-height: 64px;
+  background: #ef9a3a;
+}
+
+#pat {
+  left: 12px;
+  bottom: 12px;
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+  max-width: min(420px, 70vw);
+  z-index: 14;
+  pointer-events: none;
+}
+
+.lynx {
+  width: 72px;
+  height: 72px;
+  position: relative;
+  flex: none;
+}
+
+.lynx .face {
+  position: absolute;
+  left: 14px;
+  top: 22px;
+  width: 44px;
+  height: 40px;
+  background: #c4a15a;
+  border-radius: 50%;
+}
+
+.lynx .ear {
+  position: absolute;
+  top: 6px;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 22px solid #4a3428;
+}
+
+.lynx .ear.left { left: 16px; }
+.lynx .ear.right { right: 16px; }
+.lynx .tuft {
+  position: absolute;
+  left: 30px;
+  top: 36px;
+  width: 12px;
+  height: 8px;
+  background: #f3e5c4;
+  border-radius: 6px;
+}
+
+#pat-line, #offer, #status {
+  margin: 0;
+  background: rgb(20 14 10 / 88%);
+  padding: 8px 10px;
+  border-radius: 10px;
+}
+
+#offer { left: 12px; bottom: 96px; max-width: 280px; }
+#status { left: 50%; bottom: 88px; transform: translateX(-50%); max-width: min(560px, 92vw); text-align: center; }
+
+#panel {
+  left: 50%;
+  top: 88px;
+  transform: translateX(-50%);
+  width: min(560px, calc(100% - 24px));
+  max-height: calc(100% - 160px);
+  overflow: auto;
+  background: #fff8e8;
+  color: #2a1c12;
+  border-radius: 16px;
+  padding: 16px;
+  z-index: 18;
+}
+
+#panel:empty, #panel[hidden] { display: none; }
+
+.pad, .choices { display: flex; flex-wrap: wrap; gap: 8px; }
+.pad button, .choices button { min-width: 64px; }
+.code-view { font-size: 2rem; letter-spacing: 0.4rem; min-height: 48px; }
+
+#veil {
+  inset: 0;
+  z-index: 30;
+  background: #140e0a;
+  color: #fff8e8;
+  overflow: auto;
+  padding: 24px 16px 32px;
+}
+
+#veil[hidden] { display: none; }
+
+.card {
+  max-width: 720px;
+  margin: 0 auto;
+  display: grid;
+  gap: 12px;
+}
+
+.card h1 { margin: 0; font-size: 2rem; }
+.card p { margin: 0; }
+
+#seed-link, #menu-seed {
+  width: 100%;
+  min-height: 48px;
+  background: #2a1c12;
+  color: #fff8e8;
+  border: 2px solid #f4e1b5;
+  border-radius: 8px;
+  padding: 8px;
+}
+
+#module-list {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+@media (max-width: 700px) {
+  :root { font-size: 17px; }
+  #pat { max-width: 92vw; }
+}

@@ -1,6 +1,5 @@
-import { DIFFICULTIES } from './domain/config';
+import './ui/styles.css';
+import { boot } from './ui/app';
 
 const root = document.querySelector('#app');
-if (root) {
-  root.textContent = DIFFICULTIES.discovery.label;
-}
+if (root instanceof HTMLElement) boot(root);
