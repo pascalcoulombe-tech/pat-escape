@@ -20,6 +20,10 @@ Le temps part quand on ferme les commandes initiales. Inventaire, carnet, aide e
 
 Pas de sauvegarde. Recharger recommence la graine. L’adresse porte `seed`, `difficulty` et `version=1`. Une autre version est refusée, jamais réécrite.
 
+## Regard
+
+La souris vers la droite fait tourner la caméra vers la droite de l’écran, et vers la gauche vers la gauche. Ce n’est pas le signe du lacet qui le décide : à lacet nul la caméra regarde +Z et l’axe droit de l’écran est −X. Un déplacement horizontal positif doit donc diminuer le lacet. Le même signe sert au glissement tactile vers la droite. La souris vers le bas continue d’abaisser le regard. Le correctif du 2026-11-07 ne change pas la marche latérale ni la verticale.
+
 ## Contrats
 
 Le générateur, le solveur et l’état n’importent ni three.js ni Rapier.
@@ -34,13 +38,13 @@ Contrôle spatial : grille de 0,25 m, obstacles dilatés du rayon 0,30 m, chemin
 
 ## Commandes du 2026-11-06
 
-`npm test` — Vitest 5.1.0, 8 fichiers, 52 tests, 52 réussites, 0 échec, environ 7,0 s.
+`npm test` — 2026-11-06 : Vitest 5.1.0, 8 fichiers, 52 tests, 52 réussites. 2026-11-07, après le correctif du regard : 9 fichiers, 56 tests, 56 réussites, 0 échec, 6,15 s. `tests/look.test.ts` vérifie la direction mondiale de la caméra, pas seulement le signe du lacet.
 
 `npm run typecheck` — `tsc --noEmit`, succès.
 
 `npm run build` — Vite 8, base `/pat-escape/`. Le paquet `@dimforge/rapier3d-compat` embarque le WASM dans le JavaScript servi sous `/pat-escape/assets/`. Aucune requête WASM vers la racine du site n’est nécessaire. Le build signale un chunk supérieur à 500 kB, sans échec.
 
-`CI=1 npm run test:e2e` — terminé le 2026-11-07 à 00:03 UTC. Playwright, Chromium, preview sur `http://127.0.0.1:4173/pat-escape/`. 6 tests, 6 réussites, 0 échec, 7,5 min. La passe joue Découverte, Standard et Expert jusqu’à l’écran de victoire sur la graine `jouable-1`, vérifie une mauvaise réponse sans perte, la pause opaque, et le tactile en 360×800 puis 800×360. Le serveur de preview a relancé `npm run build`, donc le typecheck et le build de cette passe ont réussi. Avertissement Vite : un chunk dépasse 500 kB.
+`CI=1 npm run test:e2e` — 2026-11-07 00:03 UTC, avant ce correctif : 6 tests, 6 réussites, 7,5 min, dont les trois difficultés sur `jouable-1`. Après le correctif, `npm run build` réussit (`tsc` puis Vite) et Playwright relance deux tests : le glissement réel de souris vers la droite (la caméra regarde vers la droite de l’écran, et un glissement vers le bas abaisse le regard) et une partie Découverte complète. 2 réussites, 0 échec, 1,9 min. Standard, Expert, pause et tactile de la passe précédente n’ont pas été rejoués. Avertissement Vite : un chunk dépasse 500 kB.
 
 Le corpus `v1-0` … `v1-999` × Découverte, Standard, Expert fait 3 000 mondes. Chaque monde est généré deux fois et comparé, contient le bon nombre d’énigmes et les quatre familles, `validate` vide, `solve` soluble avec la sortie atteinte. Les codes, ordres et cachettes varient sur le corpus. Au moins un code commence par zéro.
 

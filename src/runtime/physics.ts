@@ -88,7 +88,7 @@ export async function createPhysics(description: WorldDescription): Promise<Phys
   return {
     step(input, deltaSeconds) {
       if (disposed) return;
-      yaw += input.lookX;
+      yaw -= input.lookX;
       pitch = Math.max(-PITCH_LIMIT, Math.min(PITCH_LIMIT, pitch + input.lookY));
       accumulator += Math.max(0, deltaSeconds);
       let steps = 0;

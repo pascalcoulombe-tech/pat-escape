@@ -11,6 +11,14 @@ const THEME_COLORS: Record<ThemeId, { wall: number; floor: number; ceiling: numb
 
 const PICK_ANGLE = 1.05;
 
+export function lookDirection(yaw: number, pitch: number): { x: number; y: number; z: number } {
+  return {
+    x: Math.sin(yaw) * Math.cos(pitch),
+    y: Math.sin(pitch),
+    z: Math.cos(yaw) * Math.cos(pitch),
+  };
+}
+
 export function createScene(canvas: HTMLCanvasElement, description: WorldDescription, mobile: boolean): SceneAdapter {
   const colors = THEME_COLORS[description.theme];
   const scene = new THREE.Scene();
@@ -106,11 +114,8 @@ export function createScene(canvas: HTMLCanvasElement, description: WorldDescrip
     render(pose, game) {
       applySize();
       eye.set(pose.position.x, pose.position.y, pose.position.z);
-      direction.set(
-        Math.sin(pose.yaw) * Math.cos(pose.pitch),
-        Math.sin(pose.pitch),
-        Math.cos(pose.yaw) * Math.cos(pose.pitch),
-      );
+      const facing = lookDirection(pose.yaw, pose.pitch);
+      direction.set(facing.x, facing.y, facing.z);
       camera.position.copy(eye);
       camera.lookAt(eye.x + direction.x, eye.y + direction.y, eye.z + direction.z);
       if (door) {
@@ -122,11 +127,8 @@ export function createScene(canvas: HTMLCanvasElement, description: WorldDescrip
     },
     pick(pose) {
       eye.set(pose.position.x, pose.position.y, pose.position.z);
-      direction.set(
-        Math.sin(pose.yaw) * Math.cos(pose.pitch),
-        Math.sin(pose.pitch),
-        Math.cos(pose.yaw) * Math.cos(pose.pitch),
-      );
+      const facing = lookDirection(pose.yaw, pose.pitch);
+      direction.set(facing.x, facing.y, facing.z);
       const candidates: { id: Id; angle: number; distance: number }[] = [];
       for (const target of targets) {
         to.set(target.point.x, target.point.y, target.point.z);
