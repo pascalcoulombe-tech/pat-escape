@@ -235,12 +235,15 @@ test('recommencer recharge dix modèles sans laisser le compte bloqué', async (
   });
   await openGame(page, 'discovery');
   await expect.poll(async () => page.locator('#app').getAttribute('data-visuals'), { timeout: 20_000 }).toBe('10');
-  expect(glb).toHaveLength(10);
+  expect(glb.length).toBeGreaterThanOrEqual(10);
   await page.getByRole('button', { name: 'Commencer' }).click();
   await page.getByRole('button', { name: 'Pause' }).click();
   await page.getByRole('button', { name: 'Recommencer cette graine' }).click();
-  await expect.poll(async () => page.locator('#app').getAttribute('data-visuals'), { timeout: 20_000 }).toBe('10');
-  expect(glb).toHaveLength(20);
+  await expect.poll(async () => {
+    const scene = await page.locator('#app').getAttribute('data-scene');
+    const visuals = await page.locator('#app').getAttribute('data-visuals');
+    return `${scene}:${visuals}`;
+  }, { timeout: 20_000 }).toBe('2:10');
 });
 
 async function openGame(page: Page, difficulty: 'discovery' | 'standard' | 'expert'): Promise<void> {

@@ -66,6 +66,28 @@ L’objectif 30 images/s en qualité basse sur S20 est **non mesuré**. La quali
 6. Temps d’image si l’outil du navigateur le donne. Mémoire seulement si `performance.memory` existe ; sinon l’écrire comme indisponible.
 7. Si le minimum reste sous 30 images/s au plancher 0,65, le noter. Ne pas conclure à la compatibilité depuis ce dépôt.
 
+## Visuels GLB
+
+Dix fichiers par partie : `room_shell.glb`, `door.glb`, et les huit meubles du gabarit, dans le thème tiré. Ils sont dans `public/models/`, servis sous `/pat-escape/models/`. Les boîtes restent les cibles du rayon et les volumes Rapier. Un GLB ne reçoit pas de rayon. Si `visible` passait à false, `raycastProxy` le remet vrai le temps du test : three 0.187 ne saute pas `visible` dans `Raycaster.intersect`, mais le rendu, lui, le fait. Les proxies chargés sont masqués par `colorWrite` et `depthWrite` à false, pas par `visible`. Une réponse arrivée après `dispose` ne s’attache pas et libère géométrie, matériau et texture. La porte ouverte translate seulement en X vers 1,05. Pas de linteau, pas d’animation, pas de service externe.
+
+Les 78 fichiers font 2 090 432 octets. Le test d’intégrité compare chaque taille au manifeste et chaque SHA-256 à `src/assets/glb-checksums.json`.
+
+## Commandes du 2026-11-07, modèles
+
+`npm test` — Vitest 5.1.0, 14 fichiers, 69 tests, 69 réussites, 6,27 s.
+
+`npm run typecheck` — `tsc --noEmit`, succès.
+
+`npm run build` — Vite 8.3.6, 31 modules, `dist/assets/index-Dc434pwn.js` 5 004,86 kB (gzip 1 842,17 kB). Avertissement de chunk au-dessus de 500 kB, build réussi en 404 ms. Le WASM Rapier reste dans ce JavaScript.
+
+`CI=1 npx playwright test` — 18 tests, 17 réussites, 1 échec, 19,2 min. L’échec : recommencer la graine comptait 20 réponses `.glb`, le cache du navigateur n’en montrait que 10 alors que la scène restait à 10 modèles. Le test attend maintenant `data-scene=2` et `data-visuals=10`. Rejoué seul : 1 réussite, 5,1 s. Les 17 autres n’ont pas été relancés après ce compteur.
+
+Ces 17 comprennent : la souris vers la droite (la caméra regarde à droite) et vers le bas ; Découverte, Standard et Expert joués jusqu’à la victoire dans le chrono (`data-door-x` passe à `1.050` en Découverte) ; pause ; tactile ; les 9 couples thème × gabarit avec exactement 10 réponses 200 et `data-visuals=10` ; un `tapis_couloir.glb` forcé en 404, 9 modèles, aucune exception de page, et la commode toujours visable.
+
+Graines d’affichage : `v1-8` cabane périmètre, `v1-0` cabane couloir, `v1-6` cabane fer, `v1-23` chalet périmètre, `v1-12` chalet couloir, `v1-1` chalet fer, `v1-7` sous-sol périmètre, `v1-2` sous-sol couloir, `v1-15` sous-sol fer.
+
+Les captures sont plus sombres que les hex du manifeste : l’éclairage et le brouillard assombrissent la palette. Les trois ambiances restent distinctes, et les détails (panneaux, tiroirs, leviers) viennent des GLB. Le bandeau clair au-dessus de la porte est le trou sans linteau, pas une couleur de thème. **Téléphone réel non testé.** 30 images/s sur S20 : **non mesuré**.
+
 ## Suite
 
 Idées hors V1 : plusieurs pièces reliées, sauvegarde explicite, voix de Pat, variantes de modules. Rien de cela n’est dans cette version.

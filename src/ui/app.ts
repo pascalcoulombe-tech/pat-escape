@@ -93,6 +93,7 @@ async function startGame(root: HTMLElement, input: SeedInput): Promise<void> {
   let panelKey = '';
   let alive = true;
   let appliedRatio = -1;
+  let sceneSerial = 1;
 
   const timer = must(root, '#timer');
   const hintCount = must(root, '#hint-count');
@@ -330,6 +331,7 @@ async function startGame(root: HTMLElement, input: SeedInput): Promise<void> {
     veilKey = '';
     panelKey = '';
     physics = await createPhysics(world);
+    sceneSerial += 1;
     scene = createScene(canvas, world, mobile);
     alive = true;
   };
@@ -497,6 +499,7 @@ async function startGame(root: HTMLElement, input: SeedInput): Promise<void> {
     root.dataset.journal = game.journalIds.join(',');
     root.dataset.solved = game.solvedIds.join(',');
     root.dataset.pointers = String(pointers.size);
+    root.dataset.scene = String(sceneSerial);
     root.dataset.visuals = String(scene.visualCount());
     root.dataset.doorX = scene.doorX().toFixed(3);
     root.dataset.theme = world.theme;
