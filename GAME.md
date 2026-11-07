@@ -86,6 +86,18 @@ Graines d’affichage : `v1-8` cabane périmètre, `v1-0` cabane couloir, `v1-6`
 
 Les captures sont plus sombres que les hex du manifeste : l’éclairage et le brouillard assombrissent la palette. Les trois ambiances restent distinctes, et les détails (panneaux, tiroirs, leviers) viennent des GLB. Le bandeau clair au-dessus de la porte est le trou sans linteau, pas une couleur de thème. **Téléphone réel non testé.** 30 images/s sur S20 : **non mesuré**.
 
+## Commandes du 2026-11-07, marche latérale
+
+Arbre `5d01e1026cc284711186a086cc26b3fc18a29cab`, à partir de `main` `1e41331`.
+
+`npm test` — Vitest 5.1.0, 15 fichiers, 81 tests, 81 réussites, 6,51 s. Avant le correctif, `tests/strafe.test.ts` échouait : D projetait environ −0,63 sur la droite de l’écran à quatre lacets. Après, les 12 cas de ce fichier passent.
+
+`npm run typecheck` — `tsc --noEmit`, succès.
+
+`npm run build` — Vite 8.3.6, `dist/assets/index-B9BuUoFc.js` 5 004,90 kB (gzip 1 842,18 kB), 402 ms. Même avertissement de chunk. La taille ne bouge pas par rapport au build GLB : une ligne de signe.
+
+`CI=1 npx playwright test` — 20 tests, 20 réussites, 0 échec, 20,3 min. Le test clavier tient D, A, les flèches, W, S et Q, puis recommence D et Q après des tours de souris. La projection utilise la colonne droite de la caméra à partir du lacet affiché, pas seulement l’axe X du monde. La souris droite/bas, les trois difficultés, la pause et le tactile restent verts. La ligne 404 est le tapis forcé.
+
 ## Suite
 
 Idées hors V1 : plusieurs pièces reliées, sauvegarde explicite, voix de Pat, variantes de modules. Rien de cela n’est dans cette version.
