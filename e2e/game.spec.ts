@@ -316,7 +316,13 @@ async function visit(page: Page, id: string, point: Vec3): Promise<void> {
 
 function standPoint(point: Vec3): { x: number; z: number } {
   if (point.x > 2.15 && point.x < 3.85) {
-    return { x: point.x, z: Math.min(4.9, Math.max(0.95, point.z)) };
+    const z = Math.min(4.9, Math.max(0.95, point.z));
+    // A floor point underfoot has almost no horizontal aim, so the look swings sideways
+    // and the pupitre wins over the rug inside the 0.5 rad preference.
+    if (point.y < 0.8 && Math.abs(z - point.z) < 0.35) {
+      return { x: point.x, z: Math.max(0.95, point.z - 0.9) };
+    }
+    return { x: point.x, z };
   }
   const x = point.x >= 3 ? Math.max(2.35, point.x - 0.9) : Math.min(3.65, point.x + 0.9);
   return { x, z: Math.min(4.9, Math.max(0.95, point.z)) };
@@ -344,10 +350,12 @@ async function walkNear(page: Page, x: number, z: number): Promise<void> {
 async function aim(page: Page, point: Vec3): Promise<void> {
   const now = await pose(page);
   await turnTo(page, Math.atan2(point.x - now.x, point.z - now.z));
-  const horizontal = Math.max(0.25, Math.hypot(point.x - now.x, point.z - now.z));
-  const desired = Math.atan2(point.y - 1.55, horizontal);
-  const delta = desired - (await pose(page)).pitch;
-  if (Math.abs(delta) > 0.06) {
+  for (let step = 0; step < 3; step += 1) {
+    const poseNow = await pose(page);
+    const horizontal = Math.max(0.25, Math.hypot(point.x - poseNow.x, point.z - poseNow.z));
+    const desired = Math.atan2(point.y - 1.55, horizontal);
+    const delta = desired - poseNow.pitch;
+    if (Math.abs(delta) < 0.06) return;
     await dragLook(page, 0, Math.max(-360, Math.min(360, -delta / 0.0022)));
   }
 }
