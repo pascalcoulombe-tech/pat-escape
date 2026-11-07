@@ -64,7 +64,7 @@ describe('gabarits accessibles', () => {
       west.step({ moveX: 0, moveZ: 1, lookX: 0, lookY: 0, interact: false }, 1 / 60);
     }
     const yaw = -Math.PI / 2;
-    west.step({ moveX: 0, moveZ: 0, lookX: yaw - west.getPose().yaw, lookY: 0, interact: false }, 1 / 60);
+    west.step({ moveX: 0, moveZ: 0, lookX: west.getPose().yaw - yaw, lookY: 0, interact: false }, 1 / 60);
     for (let step = 0; step < 180; step += 1) {
       west.step({ moveX: 0, moveZ: 1, lookX: 0, lookY: 0, interact: false }, 1 / 60);
     }

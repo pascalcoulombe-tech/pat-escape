@@ -1,6 +1,8 @@
 import { expect, test, type Page } from '@playwright/test';
+import * as THREE from 'three';
 import type { Puzzle, Vec3, WorldDescription } from '../src/domain/types';
 import { generate } from '../src/generation/generate';
+import { lookDirection } from '../src/runtime/scene';
 
 const SEED = 'jouable-1';
 
@@ -23,6 +25,24 @@ test.beforeEach(async ({ page }) => {
       console.error([...errors, ...failed].join('\n'));
     }
   });
+});
+
+test('la souris vers la droite fait regarder vers la droite de l’écran', async ({ page }) => {
+  await openGame(page, 'discovery');
+  await page.getByRole('button', { name: 'Commencer' }).click();
+  await expect.poll(async () => page.locator('#app').getAttribute('data-phase')).toBe('running');
+  const before = await pose(page);
+  const start = facingBasis(before.yaw, before.pitch);
+  await dragLook(page, 180, 0);
+  const afterRight = await pose(page);
+  const rightFacing = facingBasis(afterRight.yaw, afterRight.pitch);
+  expect(rightFacing.forward.dot(start.right)).toBeGreaterThan(0.05);
+
+  await dragLook(page, -180, 0);
+  await dragLook(page, 0, 160);
+  const afterDown = await pose(page);
+  const downFacing = facingBasis(afterDown.yaw, afterDown.pitch);
+  expect(downFacing.forward.dot(start.up)).toBeLessThan(-0.05);
 });
 
 test('charge une graine, huit modules, et une cible nommée', async ({ page }) => {
@@ -247,7 +267,7 @@ async function turnTo(page: Page, yaw: number): Promise<void> {
     const now = await pose(page);
     const delta = wrap(yaw - now.yaw);
     if (Math.abs(delta) < 0.08) return;
-    const pixels = Math.max(-420, Math.min(420, delta / 0.0022));
+    const pixels = Math.max(-420, Math.min(420, -delta / 0.0022));
     await dragLook(page, pixels, 0);
   }
 }
@@ -273,6 +293,21 @@ async function pose(page: Page): Promise<{ x: number; z: number; yaw: number; pi
     label: element.dataset.targetLabel ?? '',
     target: element.dataset.targetId ?? '',
   }));
+}
+
+function facingBasis(yaw: number, pitch: number) {
+  const camera = new THREE.PerspectiveCamera();
+  const eye = new THREE.Vector3(0, 1.55, 0);
+  const direction = lookDirection(yaw, pitch);
+  camera.position.copy(eye);
+  camera.up.set(0, 1, 0);
+  camera.lookAt(eye.x + direction.x, eye.y + direction.y, eye.z + direction.z);
+  camera.updateMatrixWorld(true);
+  const forward = new THREE.Vector3();
+  camera.getWorldDirection(forward);
+  const right = new THREE.Vector3().setFromMatrixColumn(camera.matrixWorld, 0);
+  const up = new THREE.Vector3().setFromMatrixColumn(camera.matrixWorld, 1);
+  return { forward, right, up };
 }
 
 function wrap(angle: number): number {
