@@ -66,6 +66,24 @@ L’objectif 30 images/s en qualité basse sur S20 est **non mesuré**. La quali
 6. Temps d’image si l’outil du navigateur le donne. Mémoire seulement si `performance.memory` existe ; sinon l’écrire comme indisponible.
 7. Si le minimum reste sous 30 images/s au plancher 0,65, le noter. Ne pas conclure à la compatibilité depuis ce dépôt.
 
+## Visuels GLB
+
+Dix fichiers par partie : `room_shell.glb`, `door.glb`, et les huit meubles du gabarit, dans le thème tiré. Ils sont dans `public/models/`, servis sous `/pat-escape/models/`. Les boîtes restent les cibles du rayon et les volumes Rapier. Un GLB ne reçoit pas de rayon. Si `visible` passait à false, `raycastProxy` le remet vrai le temps du test : three 0.187 ne saute pas `visible` dans `Raycaster.intersect`, mais le rendu, lui, le fait. Les proxies chargés sont masqués par `colorWrite` et `depthWrite` à false, pas par `visible`. Une réponse arrivée après `dispose` ne s’attache pas et libère géométrie, matériau et texture. La porte ouverte translate seulement en X vers 1,05. Pas de linteau, pas d’animation, pas de service externe.
+
+Les 78 fichiers font 2 090 432 octets. Le test d’intégrité compare chaque taille au manifeste et chaque SHA-256 à `src/assets/glb-checksums.json`.
+
+## Commandes du 2026-11-07, modèles
+
+`npm test` — 2026-11-07, commit `caa2909` : Vitest 5.1.0, 14 fichiers, 69 tests, 69 réussites, 7,98 s.
+
+`npm run build` sur le commit précédent `3cba1c3`, même code de jeu : Vite 8.3.6, 31 modules, `dist/assets/index-C5JDKjLU.js` 5 004,90 kB (gzip 1 842,18 kB), 407 ms. Le même avertissement de chunk au-dessus de 500 kB existe déjà sur `8ae55ab` : `index-mOHgFklw.js` 4 915,02 kB (gzip 1 818,63 kB), 25 modules. L’écart mesuré est +89 876 octets bruts et +23,6 kB gzip. Les deux bundles contiennent le même WASM embarqué, base64 de 4 109 472 caractères (environ 3 082 104 octets décodés). Le build de la suite Playwright sur `caa2909` a réussi ; ce commit ne change que le test de visée.
+
+`CI=1 npx playwright test` — 2026-11-07, arbre `caa29091e5e62412d4d50321943f834f52fafed3` : 18 tests, 18 réussites, 0 échec, 19,1 min. Souris, Découverte, Standard, Expert dans le chrono, pause, tactile, 9 couples thème × gabarit avec 10 réponses 200, tapis forcé en 404 (la ligne 404 du journal est ce cas), recommencement avec `data-scene=2` et `data-visuals=10`. Une première passe sur `3cba1c3` avait échoué : le bot debout sur le tapis regardait le pupitre, qui gagne dans le cône de 0,5 rad. Le test recule maintenant de 0,9 m devant un indice au sol.
+
+Graines d’affichage : `v1-8` cabane périmètre, `v1-0` cabane couloir, `v1-6` cabane fer, `v1-23` chalet périmètre, `v1-12` chalet couloir, `v1-1` chalet fer, `v1-7` sous-sol périmètre, `v1-2` sous-sol couloir, `v1-15` sous-sol fer.
+
+Les captures sont plus sombres que les hex du manifeste : l’éclairage et le brouillard assombrissent la palette. Les trois ambiances restent distinctes, et les détails (panneaux, tiroirs, leviers) viennent des GLB. Le bandeau clair au-dessus de la porte est le trou sans linteau, pas une couleur de thème. **Téléphone réel non testé.** 30 images/s sur S20 : **non mesuré**.
+
 ## Suite
 
 Idées hors V1 : plusieurs pièces reliées, sauvegarde explicite, voix de Pat, variantes de modules. Rien de cela n’est dans cette version.

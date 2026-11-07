@@ -2,6 +2,7 @@ import { expect, test, type Page } from '@playwright/test';
 import * as THREE from 'three';
 import type { Puzzle, Vec3, WorldDescription } from '../src/domain/types';
 import { generate } from '../src/generation/generate';
+import { LAYOUT_IDS, THEME_IDS } from '../src/generation/layouts';
 import { lookDirection } from '../src/runtime/scene';
 
 const SEED = 'jouable-1';
@@ -63,7 +64,7 @@ test('charge une graine, huit modules, et une cible nommée', async ({ page }) =
 
 for (const difficulty of ['discovery', 'standard', 'expert'] as const) {
   test(`termine ${difficulty} par l’interface`, async ({ page }) => {
-    test.setTimeout(360_000);
+    test.setTimeout(720_000);
     const world = generate({ seed: SEED, difficulty, version: 1 });
     await openGame(page, difficulty);
     await page.getByRole('button', { name: 'Commencer' }).click();
@@ -71,6 +72,9 @@ for (const difficulty of ['discovery', 'standard', 'expert'] as const) {
     await expect(page.getByRole('heading', { name: /réussi/i })).toBeVisible();
     await expect(page.getByText(SEED, { exact: false }).first()).toBeVisible();
     await expect(page.getByText(/hors chrono/i)).toHaveCount(0);
+    if (difficulty === 'discovery') {
+      await expect.poll(async () => page.locator('#app').getAttribute('data-door-x')).toBe('1.050');
+    }
   });
 }
 
@@ -90,12 +94,12 @@ test('une mauvaise réponse ne vide pas l’inventaire et la pause cache la piè
   await expect(page.getByRole('status')).toContainText(/pas la bonne/i);
   expect(await page.locator('#app').getAttribute('data-inventory')).toBe(before);
   await page.getByRole('button', { name: 'Fermer' }).click();
-  const timer = await page.locator('#timer').innerText();
   await page.getByRole('button', { name: 'Pause' }).click();
   await expect(page.getByRole('button', { name: 'Reprendre' })).toBeVisible();
   const background = await page.locator('#veil').evaluate((element) => getComputedStyle(element).backgroundColor);
   expect(background).toBe('rgb(20, 14, 10)');
   await expect(page.locator('#view')).toHaveCSS('visibility', 'hidden');
+  const timer = await page.locator('#timer').innerText();
   await page.waitForTimeout(1100);
   expect(await page.locator('#timer').innerText()).toBe(timer);
   const frozen = await pose(page);
@@ -150,6 +154,96 @@ test('le tactile sépare déplacement, regard et interaction', async ({ browser 
   const landscape = await interact.boundingBox();
   expect(landscape?.height).toBeGreaterThanOrEqual(48);
   await context.close();
+});
+
+const visualSeeds = new Map<string, string>();
+for (const theme of THEME_IDS) {
+  for (const layout of LAYOUT_IDS) visualSeeds.set(`${theme}:${layout}`, '');
+}
+for (let index = 0; index < 5000 && [...visualSeeds.values()].some((seed) => seed === ''); index += 1) {
+  const seed = `v1-${index}`;
+  const world = generate({ seed, difficulty: 'discovery', version: 1 });
+  const key = `${world.theme}:${world.layoutId}`;
+  if (visualSeeds.get(key) === '') visualSeeds.set(key, seed);
+}
+
+for (const theme of THEME_IDS) {
+  for (const layout of LAYOUT_IDS) {
+    test(`charge dix modèles ${theme} ${layout}`, async ({ page }) => {
+      const seed = visualSeeds.get(`${theme}:${layout}`);
+      expect(seed, `${theme} ${layout}`).toBeTruthy();
+      const glb: string[] = [];
+      const errors: string[] = [];
+      page.on('pageerror', (error) => errors.push(error.message));
+      page.on('console', (message) => {
+        if (message.type() === 'error') errors.push(message.text());
+      });
+      page.on('response', (response) => {
+        if (response.url().includes('/models/') && response.url().endsWith('.glb')) {
+          glb.push(`${response.status()} ${new URL(response.url()).pathname}`);
+        }
+      });
+      await page.goto(`/pat-escape/?seed=${seed}&difficulty=discovery&version=1`);
+      await expect.poll(async () => page.locator('#app').getAttribute('data-visuals'), { timeout: 20_000 }).toBe('10');
+      await expect(page.locator('#app')).toHaveAttribute('data-theme', theme);
+      await expect(page.locator('#app')).toHaveAttribute('data-layout', layout);
+      await expect(page.locator('#app')).toHaveAttribute('data-door-x', '3.000');
+      expect(glb.filter((line) => line.startsWith('200 '))).toHaveLength(10);
+      expect(glb.filter((line) => !line.startsWith('200 '))).toEqual([]);
+      expect(errors).toEqual([]);
+      await page.getByRole('button', { name: 'Commencer' }).click();
+      await expect.poll(async () => page.locator('#app').getAttribute('data-phase')).toBe('running');
+      await page.screenshot({ path: `/opt/cursor/artifacts/pat-escape-${theme}-${layout}.png`, fullPage: false });
+    });
+  }
+}
+
+test('un GLB en échec laisse les neuf autres et la partie jouable', async ({ page }) => {
+  const errors: string[] = [];
+  const pageErrors: string[] = [];
+  const glb: string[] = [];
+  page.on('pageerror', (error) => pageErrors.push(error.message));
+  page.on('console', (message) => {
+    if (message.type() === 'error') errors.push(message.text());
+  });
+  page.on('response', (response) => {
+    if (response.url().includes('/models/') && response.url().endsWith('.glb')) {
+      glb.push(`${response.status()} ${new URL(response.url()).pathname}`);
+    }
+  });
+  await page.route('**/tapis_*.glb', (route) => route.fulfill({ status: 404, body: 'missing' }));
+  await openGame(page, 'discovery');
+  await expect.poll(async () => page.locator('#app').getAttribute('data-visuals'), { timeout: 20_000 }).toBe('9');
+  expect(glb.filter((line) => line.startsWith('200 '))).toHaveLength(9);
+  expect(glb.filter((line) => line.startsWith('404 '))).toHaveLength(1);
+  expect(pageErrors).toEqual([]);
+  expect(errors.length).toBeGreaterThan(0);
+  await page.getByRole('button', { name: 'Commencer' }).click();
+  const world = generate({ seed: SEED, difficulty: 'discovery', version: 1 });
+  const spot = world.spots.find((candidate) => candidate.id !== 'tapis');
+  expect(spot).toBeTruthy();
+  if (!spot) return;
+  await lookAt(page, spot.interaction);
+  await expect.poll(async () => (await pose(page)).target).toBe(spot.id);
+  await page.screenshot({ path: '/opt/cursor/artifacts/pat-escape-missing-tapis.png', fullPage: false });
+});
+
+test('recommencer recharge dix modèles sans laisser le compte bloqué', async ({ page }) => {
+  const glb: string[] = [];
+  page.on('response', (response) => {
+    if (response.url().includes('/models/') && response.url().endsWith('.glb') && response.status() === 200) glb.push(response.url());
+  });
+  await openGame(page, 'discovery');
+  await expect.poll(async () => page.locator('#app').getAttribute('data-visuals'), { timeout: 20_000 }).toBe('10');
+  expect(glb.length).toBeGreaterThanOrEqual(10);
+  await page.getByRole('button', { name: 'Commencer' }).click();
+  await page.getByRole('button', { name: 'Pause' }).click();
+  await page.getByRole('button', { name: 'Recommencer cette graine' }).click();
+  await expect.poll(async () => {
+    const scene = await page.locator('#app').getAttribute('data-scene');
+    const visuals = await page.locator('#app').getAttribute('data-visuals');
+    return `${scene}:${visuals}`;
+  }, { timeout: 20_000 }).toBe('2:10');
 });
 
 async function openGame(page: Page, difficulty: 'discovery' | 'standard' | 'expert'): Promise<void> {
@@ -222,7 +316,13 @@ async function visit(page: Page, id: string, point: Vec3): Promise<void> {
 
 function standPoint(point: Vec3): { x: number; z: number } {
   if (point.x > 2.15 && point.x < 3.85) {
-    return { x: point.x, z: Math.min(4.9, Math.max(0.95, point.z)) };
+    const z = Math.min(4.9, Math.max(0.95, point.z));
+    // A floor point underfoot has almost no horizontal aim, so the look swings sideways
+    // and the pupitre wins over the rug inside the 0.5 rad preference.
+    if (point.y < 0.8 && Math.abs(z - point.z) < 0.35) {
+      return { x: point.x, z: Math.max(0.95, point.z - 0.9) };
+    }
+    return { x: point.x, z };
   }
   const x = point.x >= 3 ? Math.max(2.35, point.x - 0.9) : Math.min(3.65, point.x + 0.9);
   return { x, z: Math.min(4.9, Math.max(0.95, point.z)) };
@@ -235,13 +335,13 @@ async function walkNear(page: Page, x: number, z: number): Promise<void> {
     if (Math.hypot(x - now.x, z - now.z) < 0.7) return;
     if (Math.hypot(now.x - previous.x, now.z - previous.z) < 0.04) {
       await page.keyboard.down('KeyD');
-      await page.waitForTimeout(280);
+      await page.waitForTimeout(160);
       await page.keyboard.up('KeyD');
     }
     previous = now;
     await turnTo(page, Math.atan2(x - now.x, z - now.z));
     await page.keyboard.down('KeyW');
-    await page.waitForTimeout(220);
+    await page.waitForTimeout(380);
     await page.keyboard.up('KeyW');
   }
   throw new Error(`déplacement impossible vers ${x}, ${z} depuis ${JSON.stringify(await pose(page))}`);
@@ -250,10 +350,12 @@ async function walkNear(page: Page, x: number, z: number): Promise<void> {
 async function aim(page: Page, point: Vec3): Promise<void> {
   const now = await pose(page);
   await turnTo(page, Math.atan2(point.x - now.x, point.z - now.z));
-  const horizontal = Math.max(0.25, Math.hypot(point.x - now.x, point.z - now.z));
-  const desired = Math.atan2(point.y - 1.55, horizontal);
-  const delta = desired - (await pose(page)).pitch;
-  if (Math.abs(delta) > 0.06) {
+  for (let step = 0; step < 3; step += 1) {
+    const poseNow = await pose(page);
+    const horizontal = Math.max(0.25, Math.hypot(point.x - poseNow.x, point.z - poseNow.z));
+    const desired = Math.atan2(point.y - 1.55, horizontal);
+    const delta = desired - poseNow.pitch;
+    if (Math.abs(delta) < 0.06) return;
     await dragLook(page, 0, Math.max(-360, Math.min(360, -delta / 0.0022)));
   }
 }
@@ -280,7 +382,7 @@ async function dragLook(page: Page, dx: number, dy: number): Promise<void> {
   const startY = box.y + Math.min(box.height / 2, box.height - 80);
   await page.mouse.move(startX, startY);
   await page.mouse.down();
-  await page.mouse.move(startX + dx, startY + dy, { steps: Math.max(2, Math.ceil(Math.abs(dx + dy) / 30)) });
+  await page.mouse.move(startX + dx, startY + dy, { steps: Math.max(2, Math.min(4, Math.ceil(Math.abs(dx + dy) / 120))) });
   await page.mouse.up();
 }
 

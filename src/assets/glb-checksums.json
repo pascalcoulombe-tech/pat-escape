@@ -1,0 +1,417 @@
+[
+    {
+        "sha256":  "e4c876680ee9c0345fdc6daec358cb0d9eab3dffbd5956e01fa007b02162ead0",
+        "file":  "cabane/coffre_couloir.glb",
+        "bytes":  18252
+    },
+    {
+        "sha256":  "02eaec0e865404512c43efba3d18430360339bed11067a3ffedc5f64ece818d3",
+        "file":  "cabane/coffre_fer.glb",
+        "bytes":  18248
+    },
+    {
+        "sha256":  "fdac89c2ed7a89cb56c07d3599334cf93d273eb23453f873a66d66dfed2eee74",
+        "file":  "cabane/coffre_perimetre.glb",
+        "bytes":  18252
+    },
+    {
+        "sha256":  "0359507a975386e2b8f7c0d50ae29cd3ae02d16839c708ba75880efaacebacf3",
+        "file":  "cabane/commode_couloir.glb",
+        "bytes":  24888
+    },
+    {
+        "sha256":  "842af82405215dd481c20ee0be9a5558e3b0b0be8f0e2673d6ddc4771f485bc1",
+        "file":  "cabane/commode_fer.glb",
+        "bytes":  24892
+    },
+    {
+        "sha256":  "e0c0246878438e386c1eafbd721d25a227182f9dc00d179096aaa5b873c7afa1",
+        "file":  "cabane/commode_perimetre.glb",
+        "bytes":  24924
+    },
+    {
+        "sha256":  "8db6b054690061d5bef4c16d91bcad39496ee69246c7e8c7ec977d8fe3ecb0c9",
+        "file":  "cabane/door.glb",
+        "bytes":  51608
+    },
+    {
+        "sha256":  "00361528070e5698aa0c624f4037227880a0e0487ad21f121373011a168fe4fa",
+        "file":  "cabane/etagere_couloir.glb",
+        "bytes":  54952
+    },
+    {
+        "sha256":  "91d3e5e4b24ac37d9023639864376a205a282498d25657e98228c59b3f938ea8",
+        "file":  "cabane/etagere_fer.glb",
+        "bytes":  54948
+    },
+    {
+        "sha256":  "08d7847639eef0a056f1b0a85bbd357196abc0247d1b98a81dda3c18152b3537",
+        "file":  "cabane/etagere_perimetre.glb",
+        "bytes":  54956
+    },
+    {
+        "sha256":  "d44b6730745b5015e55de810fe15454067bde3d38158e3ae716cb65fcb37cd97",
+        "file":  "cabane/leviers_couloir.glb",
+        "bytes":  44916
+    },
+    {
+        "sha256":  "90c9b71dd8d2f608af1383c34f83be0d5dc23e819c7ffe1088fc333385132e01",
+        "file":  "cabane/leviers_fer.glb",
+        "bytes":  44912
+    },
+    {
+        "sha256":  "0ba1cc424cb78f2916a43b1beb10d24b92015f3570dd9de61c25f165c8a16e34",
+        "file":  "cabane/leviers_perimetre.glb",
+        "bytes":  44920
+    },
+    {
+        "sha256":  "276fe26107c58f00f1b42327a2234300d2aebcec34cedc54144be42bcdf16a4e",
+        "file":  "cabane/pupitre_couloir.glb",
+        "bytes":  14888
+    },
+    {
+        "sha256":  "9f93fe84178df4a0bbf71f9e9d9a119ac15f913352d0fa732f4e0ce83820ee50",
+        "file":  "cabane/pupitre_fer.glb",
+        "bytes":  14908
+    },
+    {
+        "sha256":  "d308ad5a2f3466d3422eeaf77a67e39e2941e414e712b8f8478ef2228005fbc0",
+        "file":  "cabane/pupitre_perimetre.glb",
+        "bytes":  14916
+    },
+    {
+        "sha256":  "4476dd9dd3d7ca7416845d42b04943e7f72a3f5abd4adfe95f0363fe1fa79b68",
+        "file":  "cabane/room_shell.glb",
+        "bytes":  7384
+    },
+    {
+        "sha256":  "c7363a0de8cb30646f3b533326638169c974c0f75e88bacbe7654754fbcfce1f",
+        "file":  "cabane/tableau_couloir.glb",
+        "bytes":  28232
+    },
+    {
+        "sha256":  "5978f217b94d0df99c07faa8da9e59abeb4e700292ae59a1a4a5d6069a37a7b6",
+        "file":  "cabane/tableau_fer.glb",
+        "bytes":  28228
+    },
+    {
+        "sha256":  "2ac780b2b17ddc55d0970adac345f54dd1373733604277ed1ccffe61ab249540",
+        "file":  "cabane/tableau_perimetre.glb",
+        "bytes":  28236
+    },
+    {
+        "sha256":  "64f2c45372066451ffc71f625e3664f9827c5546a719af1ad2a8d75326b0b307",
+        "file":  "cabane/table_couloir.glb",
+        "bytes":  21560
+    },
+    {
+        "sha256":  "f739e33acb1e98bc164720e02624bfc90d4efc23a1f07017df5377f64d150397",
+        "file":  "cabane/table_fer.glb",
+        "bytes":  21552
+    },
+    {
+        "sha256":  "725a74be2a60bfc777f004015519c03ff6aed3c15a388d2af1edb671ef30936c",
+        "file":  "cabane/table_perimetre.glb",
+        "bytes":  21564
+    },
+    {
+        "sha256":  "732fdba1985c5ec49bf69a9e3658b346bb9b41bc090a01de1845f9f74cee40ac",
+        "file":  "cabane/tapis_couloir.glb",
+        "bytes":  4900
+    },
+    {
+        "sha256":  "195ebb3d188567e70d8507d9b03fad85bc1cc2852d2cfa5a92d43b62d735c45f",
+        "file":  "cabane/tapis_fer.glb",
+        "bytes":  4896
+    },
+    {
+        "sha256":  "78bb3d2cfc938b161ca34396352de4a15dc801a15568a6d212dbce610c7075ed",
+        "file":  "cabane/tapis_perimetre.glb",
+        "bytes":  4900
+    },
+    {
+        "sha256":  "10c22c6265f00fc5b5c6892de2276c7830f4c43549923b6cd738b1d99b7d9a81",
+        "file":  "chalet/coffre_couloir.glb",
+        "bytes":  18248
+    },
+    {
+        "sha256":  "1ed8f2db09c151f4826aff9ddb189a34579e3099e939b1540f259a9e7eb636fc",
+        "file":  "chalet/coffre_fer.glb",
+        "bytes":  18244
+    },
+    {
+        "sha256":  "4363001887ae4c3b5ce1b0cd076a17aa3077bc21418d4589b30324b3add11b7b",
+        "file":  "chalet/coffre_perimetre.glb",
+        "bytes":  18248
+    },
+    {
+        "sha256":  "1cc95d45bafde06fdba2ec5a48986576936dd1752b6cf65a7e0a84bace8a713b",
+        "file":  "chalet/commode_couloir.glb",
+        "bytes":  24884
+    },
+    {
+        "sha256":  "cfc08c0b6484ead4f194f395606ae1b564a13df0520a7fd45489e0216630e4f1",
+        "file":  "chalet/commode_fer.glb",
+        "bytes":  24888
+    },
+    {
+        "sha256":  "54b9c40620f09317b57b57e797e72275130c58cf78242296e339e5df335a0ea4",
+        "file":  "chalet/commode_perimetre.glb",
+        "bytes":  24920
+    },
+    {
+        "sha256":  "a2c26b64d1de9bb022b2143acd4ae02fc6c5c19966b8a4ad218901077b1773f1",
+        "file":  "chalet/door.glb",
+        "bytes":  51604
+    },
+    {
+        "sha256":  "3a00f281dcbc78a7171fc6db9afca844fdc8f69788135cc087cbb4caa04ff441",
+        "file":  "chalet/etagere_couloir.glb",
+        "bytes":  54948
+    },
+    {
+        "sha256":  "11ca9eb71a65c80420831501bfb13fb03e8545492c0211fd53527bda1ba42057",
+        "file":  "chalet/etagere_fer.glb",
+        "bytes":  54944
+    },
+    {
+        "sha256":  "afdb96a558c96c642d5d1d45c5f17fb6b3d9cbb574394ee7e6f517472dbc3fb1",
+        "file":  "chalet/etagere_perimetre.glb",
+        "bytes":  54952
+    },
+    {
+        "sha256":  "aecc8be92d91db733bfc981df1e6af910089b803ade3204dc23a852aa77e538b",
+        "file":  "chalet/leviers_couloir.glb",
+        "bytes":  44912
+    },
+    {
+        "sha256":  "191386d7da33424c06e9b0272909a80a01dcf6f255ed45a998462345f7301b1e",
+        "file":  "chalet/leviers_fer.glb",
+        "bytes":  44908
+    },
+    {
+        "sha256":  "46930d09fefa63530578b3fb091f558e50d46df6b084fc3cd3b5ed609d124ce4",
+        "file":  "chalet/leviers_perimetre.glb",
+        "bytes":  44916
+    },
+    {
+        "sha256":  "cef7f7747b66815dd282164c3ba2be0087f0c5feb16c60f570f448d851060eb8",
+        "file":  "chalet/pupitre_couloir.glb",
+        "bytes":  14884
+    },
+    {
+        "sha256":  "5103d76a53f3bcae656a47b76c800a3f5482736d839804114930512acaaab205",
+        "file":  "chalet/pupitre_fer.glb",
+        "bytes":  14904
+    },
+    {
+        "sha256":  "3478ea2523869aabcabe6c2c5055bb300982ee36e7792a822838192a81ea704f",
+        "file":  "chalet/pupitre_perimetre.glb",
+        "bytes":  14912
+    },
+    {
+        "sha256":  "4a1f0038d82ebba058631dca660b0dd1b409ec78ecb80a37beadeae5b1fbc7c3",
+        "file":  "chalet/room_shell.glb",
+        "bytes":  7380
+    },
+    {
+        "sha256":  "d1c393bce7f174f2b4a887eac00245ffba0e0e6954b8609d914d2ac86e1ed8c3",
+        "file":  "chalet/tableau_couloir.glb",
+        "bytes":  28228
+    },
+    {
+        "sha256":  "119ee26c54db182bf356fba36515c5d8f8127e5ce069835431c5f7c23ef42cc7",
+        "file":  "chalet/tableau_fer.glb",
+        "bytes":  28224
+    },
+    {
+        "sha256":  "fdf6e1be3cef657329ca84b5ff3e14611d0a1ec7b40fbf09088f7719505b0f89",
+        "file":  "chalet/tableau_perimetre.glb",
+        "bytes":  28232
+    },
+    {
+        "sha256":  "4c39c3a4e0cdc27cc3d15e5d4ef8e75f1d58cb7fe08ea77f9a8ec0b7a1d20695",
+        "file":  "chalet/table_couloir.glb",
+        "bytes":  21556
+    },
+    {
+        "sha256":  "1b7b7181f7387d4253a2d2f3a4d8698635c584238555f0227e55f4b703cd0103",
+        "file":  "chalet/table_fer.glb",
+        "bytes":  21548
+    },
+    {
+        "sha256":  "42c706f568c0c687f44e0d5c24966141ff003326437a679e41d2f0dda95e8a76",
+        "file":  "chalet/table_perimetre.glb",
+        "bytes":  21560
+    },
+    {
+        "sha256":  "cefbdc7b07c14d63f9a0a9bc9f0eea566e11b86d3e33714fc492b4f29ff5f67e",
+        "file":  "chalet/tapis_couloir.glb",
+        "bytes":  4896
+    },
+    {
+        "sha256":  "e0abfd04df316a8ed0682758cffec0bba8b98fb8d77f1150e28c07143dbcc36a",
+        "file":  "chalet/tapis_fer.glb",
+        "bytes":  4892
+    },
+    {
+        "sha256":  "3e8d07d2a67ca6eae7015ec41a10d197a322c81bf55a79fb84fac02a8f7a6227",
+        "file":  "chalet/tapis_perimetre.glb",
+        "bytes":  4896
+    },
+    {
+        "sha256":  "eea8eb2f20454db13958ce8d6d3607f0276c685c20ebe255dd3a67eda1faa3ba",
+        "file":  "sous-sol/coffre_couloir.glb",
+        "bytes":  18252
+    },
+    {
+        "sha256":  "68d00e88416279756053147ec6a0450fb7ea25d5f001193e8c7fb67081f0ab1c",
+        "file":  "sous-sol/coffre_fer.glb",
+        "bytes":  18248
+    },
+    {
+        "sha256":  "2c5a2675ed97930928627e35057223e10eff256dcae6f7353725de333f1f0e54",
+        "file":  "sous-sol/coffre_perimetre.glb",
+        "bytes":  18252
+    },
+    {
+        "sha256":  "bd7bb3a39176a22e0cde340791e5891622be78104be3fd91bdc597b609348f0b",
+        "file":  "sous-sol/commode_couloir.glb",
+        "bytes":  24892
+    },
+    {
+        "sha256":  "de292b03d5a1dc467f986c12284b4c752e627649dc017d4904cef090bf7938bc",
+        "file":  "sous-sol/commode_fer.glb",
+        "bytes":  24896
+    },
+    {
+        "sha256":  "16e971063d25661bfbc907a09bd3366dc503a822acf936bc1b48c72af6543452",
+        "file":  "sous-sol/commode_perimetre.glb",
+        "bytes":  24924
+    },
+    {
+        "sha256":  "53f2855497acf8fd7728ac7a765abfdc8a0609a7273849dcc632975a3dca6df5",
+        "file":  "sous-sol/door.glb",
+        "bytes":  51608
+    },
+    {
+        "sha256":  "df9fbac51b0ce7e0e92b3fe8f34336f6ddf7d98f5789e01da243bc56a315243f",
+        "file":  "sous-sol/etagere_couloir.glb",
+        "bytes":  54952
+    },
+    {
+        "sha256":  "fe0d9a8f03921d474e3697201421d4b36193013c1723bb66788805771e9b5dd9",
+        "file":  "sous-sol/etagere_fer.glb",
+        "bytes":  54948
+    },
+    {
+        "sha256":  "e795c6ead4b8b6f08768d879eb45fce13cdf014f3fa1534ef463bf5e550e59cf",
+        "file":  "sous-sol/etagere_perimetre.glb",
+        "bytes":  54960
+    },
+    {
+        "sha256":  "0f83e4a643222612bbd103e2eb8d4f7b0146a580594a04a26d9f75f80f88bab4",
+        "file":  "sous-sol/leviers_couloir.glb",
+        "bytes":  44916
+    },
+    {
+        "sha256":  "5740fb54fd31da4decfa2f37671357daac54e32e290229a6ed74fd4bdca494c6",
+        "file":  "sous-sol/leviers_fer.glb",
+        "bytes":  44916
+    },
+    {
+        "sha256":  "9f8e5b10afbc9859d8c932acd56834f18650eccdb4f0ef65ec51d3361b3d5235",
+        "file":  "sous-sol/leviers_perimetre.glb",
+        "bytes":  44924
+    },
+    {
+        "sha256":  "5bd7198c276baf5ea6096fb88d1c85e61376bec84a4eb8032603a6f647fbaf79",
+        "file":  "sous-sol/pupitre_couloir.glb",
+        "bytes":  14888
+    },
+    {
+        "sha256":  "c1a4977d83f46d7e7e20ff0c1408435691345eb13bd5d3597565e82d9715cc00",
+        "file":  "sous-sol/pupitre_fer.glb",
+        "bytes":  14908
+    },
+    {
+        "sha256":  "140f8467c719ce27ceb19edd7c5b3e1cb5e99e797ef13b5e55054c71e4d581e1",
+        "file":  "sous-sol/pupitre_perimetre.glb",
+        "bytes":  14916
+    },
+    {
+        "sha256":  "feaa4f6e973f826f3d9fcf46c4f0c6c04c3481e9f6038849ce4c2e47f6818425",
+        "file":  "sous-sol/room_shell.glb",
+        "bytes":  7388
+    },
+    {
+        "sha256":  "b77ce001d6cb23230397dea119a5fb37198733822d01d41854c8cbdefc77c474",
+        "file":  "sous-sol/tableau_couloir.glb",
+        "bytes":  28236
+    },
+    {
+        "sha256":  "57f821f7b27f37c9ed451d702283ab7f36c61cbd98100bae8d75371cf84ce997",
+        "file":  "sous-sol/tableau_fer.glb",
+        "bytes":  28228
+    },
+    {
+        "sha256":  "a378887321c74f32114581789afad1da1562747c723b5d90f75d257376c78ca1",
+        "file":  "sous-sol/tableau_perimetre.glb",
+        "bytes":  28236
+    },
+    {
+        "sha256":  "b379e3df4c889c7b0f32d35b45115270f5248aa4f91c55593ee5519e47fb57ef",
+        "file":  "sous-sol/table_couloir.glb",
+        "bytes":  21564
+    },
+    {
+        "sha256":  "1721f6076762f9972bb8fba9ecb9339d07e41130ad04e608603219f6f45dc2a7",
+        "file":  "sous-sol/table_fer.glb",
+        "bytes":  21556
+    },
+    {
+        "sha256":  "01f51da133bbcc49632d72dcaecaaf6978958de89668688cfa7d826350e86e2c",
+        "file":  "sous-sol/table_perimetre.glb",
+        "bytes":  21564
+    },
+    {
+        "sha256":  "9273665af3c339eb846a30ca38cafe99a8341bfe3dee5df25ac017a4d8783fd0",
+        "file":  "sous-sol/tapis_couloir.glb",
+        "bytes":  4900
+    },
+    {
+        "sha256":  "78776d3d74ca9e6f6e33e9528f4f8182a038c872f291efbf9b99907584627bc9",
+        "file":  "sous-sol/tapis_fer.glb",
+        "bytes":  4896
+    },
+    {
+        "sha256":  "35fa8cd497554f40e7258eb6a3bf4947db39df1a2732cf77e3b19ec086c23859",
+        "file":  "sous-sol/tapis_perimetre.glb",
+        "bytes":  4904
+    },
+    {
+        "sha256":  "224ec17a4c72670afab1ec74deb79fee71f2b5c33ca8bd40aff44c5dcfb3e055",
+        "file":  "manifest.json",
+        "bytes":  214341
+    },
+    {
+        "sha256":  "f7f0d3bb852c81b7dc29a87e33372fe7872820279585491340431ecbd541632c",
+        "file":  "README.md",
+        "bytes":  1418
+    },
+    {
+        "sha256":  "1306976b1d74c69b2be74e0a5ceef99bc9bec17e938eb0dc30a55dbc5387a88b",
+        "file":  "room_cabane.png",
+        "bytes":  497808
+    },
+    {
+        "sha256":  "5ef7484cca0dd146eb1c950f4dc555ed8e078b335edf1735d7d75db40650261a",
+        "file":  "room_chalet.png",
+        "bytes":  484074
+    },
+    {
+        "sha256":  "15fc567ab511c0d5268a6b0eab53faeceb64df1d721ddd33eb20dce14c83e929",
+        "file":  "room_sous-sol.png",
+        "bytes":  488426
+    }
+]
