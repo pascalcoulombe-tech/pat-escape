@@ -22,7 +22,9 @@ Pas de sauvegarde. Recharger recommence la graine. L’adresse porte `seed`, `di
 
 ## Regard
 
-La souris vers la droite fait tourner la caméra vers la droite de l’écran, et vers la gauche vers la gauche. Ce n’est pas le signe du lacet qui le décide : à lacet nul la caméra regarde +Z et l’axe droit de l’écran est −X. Un déplacement horizontal positif doit donc diminuer le lacet. Le même signe sert au glissement tactile vers la droite. La souris vers le bas continue d’abaisser le regard. Le correctif du 2026-11-07 ne change pas la marche latérale ni la verticale.
+La souris vers la droite fait tourner la caméra vers la droite de l’écran, et vers la gauche vers la gauche. Ce n’est pas le signe du lacet qui le décide : à lacet nul la caméra regarde +Z et l’axe droit de l’écran est −X. Un déplacement horizontal positif doit donc diminuer le lacet. Le même signe sert au glissement tactile vers la droite. La souris vers le bas continue d’abaisser le regard.
+
+A, Q et la flèche gauche déplacent vers la gauche de l’écran. D et la flèche droite vers la droite. Le joystick tactile utilise le même axe : pousser à droite va vers la droite de l’écran. W, Z, S et les flèches avant/arrière suivent le regard. Il n’y a pas de manette. Le vecteur latéral du contrôleur était `(cos lacet, −sin lacet)`, soit +X à lacet nul, donc la gauche de l’écran. Le correctif le remplace par la colonne droite de la caméra, `(−cos lacet, sin lacet)`. Le regard de la souris n’est pas modifié.
 
 ## Contrats
 
