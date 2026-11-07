@@ -74,15 +74,11 @@ Les 78 fichiers font 2 090 432 octets. Le test d’intégrité compare chaque ta
 
 ## Commandes du 2026-11-07, modèles
 
-`npm test` — Vitest 5.1.0, 14 fichiers, 69 tests, 69 réussites, 6,27 s.
+`npm test` — 2026-11-07, commit `caa2909` : Vitest 5.1.0, 14 fichiers, 69 tests, 69 réussites, 7,98 s.
 
-`npm run typecheck` — `tsc --noEmit`, succès.
+`npm run build` sur le commit précédent `3cba1c3`, même code de jeu : Vite 8.3.6, 31 modules, `dist/assets/index-C5JDKjLU.js` 5 004,90 kB (gzip 1 842,18 kB), 407 ms. Le même avertissement de chunk au-dessus de 500 kB existe déjà sur `8ae55ab` : `index-mOHgFklw.js` 4 915,02 kB (gzip 1 818,63 kB), 25 modules. L’écart mesuré est +89 876 octets bruts et +23,6 kB gzip. Les deux bundles contiennent le même WASM embarqué, base64 de 4 109 472 caractères (environ 3 082 104 octets décodés). Le build de la suite Playwright sur `caa2909` a réussi ; ce commit ne change que le test de visée.
 
-`npm run build` — Vite 8.3.6, 31 modules, `dist/assets/index-Dc434pwn.js` 5 004,86 kB (gzip 1 842,17 kB). Avertissement de chunk au-dessus de 500 kB, build réussi en 404 ms. Le WASM Rapier reste dans ce JavaScript.
-
-`CI=1 npx playwright test` — 18 tests, 17 réussites, 1 échec, 19,2 min. L’échec : recommencer la graine comptait 20 réponses `.glb`, le cache du navigateur n’en montrait que 10 alors que la scène restait à 10 modèles. Le test attend maintenant `data-scene=2` et `data-visuals=10`. Rejoué seul : 1 réussite, 5,1 s. Les 17 autres n’ont pas été relancés après ce compteur.
-
-Ces 17 comprennent : la souris vers la droite (la caméra regarde à droite) et vers le bas ; Découverte, Standard et Expert joués jusqu’à la victoire dans le chrono (`data-door-x` passe à `1.050` en Découverte) ; pause ; tactile ; les 9 couples thème × gabarit avec exactement 10 réponses 200 et `data-visuals=10` ; un `tapis_couloir.glb` forcé en 404, 9 modèles, aucune exception de page, et la commode toujours visable.
+`CI=1 npx playwright test` — 2026-11-07, arbre `caa29091e5e62412d4d50321943f834f52fafed3` : 18 tests, 18 réussites, 0 échec, 19,1 min. Souris, Découverte, Standard, Expert dans le chrono, pause, tactile, 9 couples thème × gabarit avec 10 réponses 200, tapis forcé en 404 (la ligne 404 du journal est ce cas), recommencement avec `data-scene=2` et `data-visuals=10`. Une première passe sur `3cba1c3` avait échoué : le bot debout sur le tapis regardait le pupitre, qui gagne dans le cône de 0,5 rad. Le test recule maintenant de 0,9 m devant un indice au sol.
 
 Graines d’affichage : `v1-8` cabane périmètre, `v1-0` cabane couloir, `v1-6` cabane fer, `v1-23` chalet périmètre, `v1-12` chalet couloir, `v1-1` chalet fer, `v1-7` sous-sol périmètre, `v1-2` sous-sol couloir, `v1-15` sous-sol fer.
 
