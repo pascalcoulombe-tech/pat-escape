@@ -46,6 +46,35 @@ test('la souris vers la droite fait regarder vers la droite de l’écran', asyn
   expect(downFacing.forward.dot(start.up)).toBeLessThan(-0.05);
 });
 
+test('la pièce rendue montre la porte, un côté et le haut', async ({ page }) => {
+  await openGame(page, 'discovery');
+  await page.screenshot({ path: '/opt/cursor/artifacts/pat-escape-audit-intro.png', fullPage: false });
+  await page.getByRole('button', { name: 'Commencer' }).click();
+  await expect.poll(async () => page.locator('#app').getAttribute('data-phase')).toBe('running');
+  await page.screenshot({ path: '/opt/cursor/artifacts/pat-escape-audit-door.png', fullPage: false });
+  await dragLook(page, 520, 40);
+  await page.screenshot({ path: '/opt/cursor/artifacts/pat-escape-audit-side.png', fullPage: false });
+  await dragLook(page, -520, -280);
+  await page.screenshot({ path: '/opt/cursor/artifacts/pat-escape-audit-up.png', fullPage: false });
+});
+
+test('A va vers la gauche de l’écran et D vers la droite, à plusieurs lacets', async ({ page }) => {
+  await openGame(page, 'discovery');
+  await page.getByRole('button', { name: 'Commencer' }).click();
+  await expect.poll(async () => page.locator('#app').getAttribute('data-phase')).toBe('running');
+  await screenMove(page, 'KeyD', 'right');
+  await screenMove(page, 'KeyA', 'left');
+  await screenMove(page, 'ArrowRight', 'right');
+  await screenMove(page, 'ArrowLeft', 'left');
+  await screenMove(page, 'KeyW', 'forward');
+  await screenMove(page, 'KeyS', 'back');
+  await dragLook(page, 420, 0);
+  await screenMove(page, 'KeyD', 'right');
+  await dragLook(page, -800, 0);
+  await screenMove(page, 'KeyQ', 'left');
+  await page.screenshot({ path: '/opt/cursor/artifacts/pat-escape-strafe.png', fullPage: false });
+});
+
 test('charge une graine, huit modules, et une cible nommée', async ({ page }) => {
   const world = generate({ seed: SEED, difficulty: 'discovery', version: 1 });
   await openGame(page, 'discovery');
@@ -384,6 +413,24 @@ async function dragLook(page: Page, dx: number, dy: number): Promise<void> {
   await page.mouse.down();
   await page.mouse.move(startX + dx, startY + dy, { steps: Math.max(2, Math.min(4, Math.ceil(Math.abs(dx + dy) / 120))) });
   await page.mouse.up();
+}
+
+async function screenMove(page: Page, key: string, direction: 'right' | 'left' | 'forward' | 'back'): Promise<void> {
+  const before = await pose(page);
+  const basis = facingBasis(before.yaw, before.pitch);
+  await page.keyboard.down(key);
+  await page.waitForTimeout(280);
+  await page.keyboard.up(key);
+  await page.waitForTimeout(40);
+  const after = await pose(page);
+  const delta = new THREE.Vector3(after.x - before.x, 0, after.z - before.z);
+  expect(delta.length(), `${key} à lacet ${before.yaw}`).toBeGreaterThan(0.15);
+  const right = delta.dot(basis.right);
+  const forward = delta.dot(basis.forward);
+  if (direction === 'right') expect(right, `${key} droite écran`).toBeGreaterThan(0.12);
+  if (direction === 'left') expect(right, `${key} gauche écran`).toBeLessThan(-0.12);
+  if (direction === 'forward') expect(forward, `${key} avant`).toBeGreaterThan(0.12);
+  if (direction === 'back') expect(forward, `${key} arrière`).toBeLessThan(-0.12);
 }
 
 async function pose(page: Page): Promise<{ x: number; z: number; yaw: number; pitch: number; label: string; target: string }> {

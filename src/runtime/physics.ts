@@ -68,8 +68,9 @@ export async function createPhysics(description: WorldDescription): Promise<Phys
     const moveZ = length > 1 ? input.moveZ / length : input.moveZ;
     const forwardX = Math.sin(yaw);
     const forwardZ = Math.cos(yaw);
-    const rightX = Math.cos(yaw);
-    const rightZ = -Math.sin(yaw);
+    // Camera column 0 is screen-right. At yaw 0 that is −X, the opposite of (cos yaw, −sin yaw).
+    const rightX = -Math.cos(yaw);
+    const rightZ = Math.sin(yaw);
     controller.computeColliderMovement(collider, {
       x: (forwardX * moveZ + rightX * moveX) * MOVE_SPEED * dt,
       y: -3 * dt,
